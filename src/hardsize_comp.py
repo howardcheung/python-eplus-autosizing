@@ -49,11 +49,6 @@ def copy_sizing_system_info(old_idf_txt: str, eio_txt: str):
         ):eio_txt.find(b'! <Component Sizing Information>')].decode()),
         sep=','
     )
-    comp_size_data = pd.read_csv(StringIO(eio_txt[eio_txt.find(
-        b'! <Component Sizing Information>'
-    ):eio_txt.find(
-        b'!<Controller:MechanicalVentilation>'
-    )].decode()), sep=',')
 
     # for each item of sizing:system, find the corresponding text and replace
     # the heating and cooling capacities
@@ -63,7 +58,8 @@ def copy_sizing_system_info(old_idf_txt: str, eio_txt: str):
         upper_txt = new_txt.upper()
         # find the location of the object
         obj_txt_re = re.compile(b''.join([
-            b'SIZING:SYSTEM,\s*\n\s*',
+            (b'Sizing:System').upper(),
+            b',\s*\n\s*',
             sys_size_data.loc[
                 ind, ' System Name'
             ].encode().replace(b'_', b'\_'), b'[^;]+'
@@ -92,12 +88,66 @@ def copy_sizing_system_info(old_idf_txt: str, eio_txt: str):
                 ])
 
     # copy the design airflow from the AirLoopHVAC objects
+    new_txt = copying_specified_items(
+        new_txt, eio_txt, b'Sizing:System', 'AirLoopHVAC',
+        'Design Supply Air Flow Rate [m3/s]', 3
+    )  # use the modified idf as input
+
+    # return the file
+    return new_txt
+
+
+def copying_specified_items(old_idf_txt: str, eio_txt: str, obj_name: str,
+                            comp_type: str, input_field: str, pos: int):
+    """
+        This function does the hardsizing according to
+            the original idf text
+            the text in the eio file
+            the name of the E+ object to be worked on
+            the type of component
+            the input field description
+            the position of the field to be replaced
+        and return the new idf string
+
+        Inputs:
+        ==========
+        old_idf_txt: strings
+            strings of the old idf file in UTF-coding
+
+        eio_txt: strings
+            strings of the eio file in UTF-coding
+
+        obj_name: strings
+            the name of the E+ object in UTF-coding e.g. b'Sizing:System'
+
+        comp_type: strings
+            the name of the type of component e.g. 'AirLoopHVAC'
+
+        input_field: strings
+            input field description
+
+        pos: int
+            the position where the autosize inputs are position in the
+            E+ object
+    """
+
+    # convert the eio file to a pandas dataframe
+    comp_size_data = pd.read_csv(StringIO(eio_txt[eio_txt.find(
+        b'! <Component Sizing Information>'
+    ):eio_txt.find(
+        b'!<Controller:MechanicalVentilation>'
+    )].decode()), sep=',')
+
+    # hardsizing by replacing the autosize field to the field according to
+    # the eio file values
+    upper_obj_name = obj_name.upper()
+    new_txt = old_idf_txt
     for ind in comp_size_data.index:
         # use upper text only to search for consistent
         upper_txt = new_txt.upper()
         # find the location of the object
         obj_txt_re = re.compile(b''.join([
-            b'SIZING:SYSTEM,\s*\n\s*',
+            upper_obj_name, b',\s*\n\s*',
             comp_size_data.loc[
                 ind, ' Component Name'
             ].encode().replace(b'_', b'\_'), b'[^;]+'
@@ -105,13 +155,13 @@ def copy_sizing_system_info(old_idf_txt: str, eio_txt: str):
         if obj_txt_re is not None and \
                 comp_size_data.loc[
                     ind, ' Component Type'
-                ] == ' AirLoopHVAC' and comp_size_data.loc[
+                ] == ''.join([' ', comp_type]) and comp_size_data.loc[
                     ind, ' Input Field Description'
-                ] == ' Design Supply Air Flow Rate [m3/s]':
+                ] == ''.join([' ', input_field]):
             # to bypass error
             obj_txt = upper_txt[obj_txt_re.span()[0]:obj_txt_re.span()[1]]
             txt_re = re.compile(
-                b''.join([b'.+\n']*3+[b'\s*AUTOSIZE'])
+                b''.join([b'.+\n']*pos+[b'\s*AUTOSIZE'])
             ).search(obj_txt)  # find the 3rd field in Sizing:System
             if txt_re is not None:
                 # replace the string
@@ -122,7 +172,6 @@ def copy_sizing_system_info(old_idf_txt: str, eio_txt: str):
                     new_txt[obj_txt_re.span()[0]+txt_re.span()[1]:]
                 ])
 
-    # return the file
     return new_txt
 
 
