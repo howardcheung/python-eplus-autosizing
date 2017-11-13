@@ -1,0 +1,84 @@
+8510c8510
+<     AUTOSIZE,                !- Design Outdoor Air Flow Rate {m3/s}
+---
+>     4.94579,                !- Design Outdoor Air Flow Rate {m3/s}
+8537c8537
+<     autosize,                !- Cooling Design Capacity {W}
+---
+>     75214.72,                !- Cooling Design Capacity {W}
+8541c8541
+<     autosize,                !- Heating Design Capacity {W}
+---
+>     45424.36,                !- Heating Design Capacity {W}
+8576c8576
+<     autosize,                !- Cooling Design Capacity {W}
+---
+>     175951.96,                !- Cooling Design Capacity {W}
+8580c8580
+<     autosize,                !- Heating Design Capacity {W}
+---
+>     7550.34,                !- Heating Design Capacity {W}
+8615c8615
+<     autosize,                !- Cooling Design Capacity {W}
+---
+>     1423500.49,                !- Cooling Design Capacity {W}
+8619c8619
+<     autosize,                !- Heating Design Capacity {W}
+---
+>     120687.48,                !- Heating Design Capacity {W}
+8654c8654
+<     autosize,                !- Cooling Design Capacity {W}
+---
+>     159869.36,                !- Cooling Design Capacity {W}
+8658c8658
+<     autosize,                !- Heating Design Capacity {W}
+---
+>     12505.63,                !- Heating Design Capacity {W}
+8668c8668
+<     autosize,                !- Design Outdoor Air Flow Rate {m3/s}
+---
+>     19.24624,                !- Design Outdoor Air Flow Rate {m3/s}
+8695c8695
+<     autosize,                !- Cooling Design Capacity {W}
+---
+>     331936.29,                !- Cooling Design Capacity {W}
+8699c8699
+<     autosize,                !- Heating Design Capacity {W}
+---
+>     12807.73,                !- Heating Design Capacity {W}
+8707c8707
+<     autosize,                !- Design Outdoor Air Flow Rate {m3/s}
+---
+>     0.50992,                !- Design Outdoor Air Flow Rate {m3/s}
+8734c8734
+<     autosize,                !- Cooling Design Capacity {W}
+---
+>     8747.52,                !- Cooling Design Capacity {W}
+8738c8738
+<     autosize,                !- Heating Design Capacity {W}
+---
+>     591.66,                !- Heating Design Capacity {W}
+8746c8746
+<     autosize,                !- Design Outdoor Air Flow Rate {m3/s}
+---
+>     4.14453,                !- Design Outdoor Air Flow Rate {m3/s}
+8773c8773
+<     autosize,                !- Cooling Design Capacity {W}
+---
+>     71088.31,                !- Cooling Design Capacity {W}
+8777c8777
+<     autosize,                !- Heating Design Capacity {W}
+---
+>     5916.64,                !- Heating Design Capacity {W}
+8785c8785
+<     autosize,                !- Design Outdoor Air Flow Rate {m3/s}
+---
+>     0.41424,                !- Design Outdoor Air Flow Rate {m3/s}
+8812c8812
+<     autosize,                !- Cooling Design Capacity {W}
+---
+>     7192.73,                !- Cooling Design Capacity {W}
+8816c8816
+<     autosize,                !- Heating Design Capacity {W}
+---
+>     591.66,                !- Heating Design Capacity {W}

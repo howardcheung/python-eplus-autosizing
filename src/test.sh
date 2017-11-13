@@ -6,4 +6,7 @@
 # Date: 2017/11/13
 
 # run the main function to output the new idf
-python3 hardsizeeplus.py ../dat/ASHRAE90.1_OfficeLarge_STD2013_Miami.idf ../dat/eplusout.eio ./results/new.idf
+python3 hardsizeeplus.py ../dat/ASHRAE90.1_OfficeLarge_STD2013_Miami.idf ../dat/eplusout.eio ../results/new.idf
+
+# diff the file
+diff ../dat/ASHRAE90.1_OfficeLarge_STD2013_Miami.idf ../results/new.idf > ../results/idf_diff.txt

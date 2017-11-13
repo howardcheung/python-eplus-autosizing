@@ -17,6 +17,7 @@ import sys
 
 
 # user-defined libraries
+from hardsize_comp import copy_sizing_system_info
 
 
 # global variables
@@ -45,14 +46,17 @@ def main(old_idf_file: str, eio_file: str, new_idf_file: str):
     """
 
     # write script to read the the old idf
-    inputidf = read_file(old_idf_file)
+    old_idf_txt = read_file(old_idf_file)
 
     # write script to read the eio file
-    eio = read_file(eio_file)
+    eio_txt = read_file(eio_file)
 
     # write script to transfer the values from the eio file to the idf file
+    new_idf = create_new_idf(old_idf_txt, eio_txt)
 
     # output the new idf file
+    with open(new_idf_file, 'wb') as fopened:
+        fopened.write(new_idf)
 
 
 def read_file(filepath: str):
@@ -88,13 +92,13 @@ def create_new_idf(old_idf_txt: str, eio_txt: str):
 
     # create new string object with autosizing information of Sizing:System
     # objects
-
-    # modify the string object with sizing information of
-    # AirTerminal:SingleDuct:Uncontrolled object
+    new_idf = copy_sizing_system_info(old_idf_txt, eio_txt)
 
     # modify the string object for the rest of the components
+    # to be coded by Jiefang
 
-    pass
+    # return the new text
+    return new_idf
 
 
 # running the script file
