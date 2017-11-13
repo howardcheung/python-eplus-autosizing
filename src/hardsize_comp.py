@@ -59,6 +59,7 @@ def copy_sizing_system_info(old_idf_txt: str, eio_txt: str):
     # the heating and cooling capacities
     new_txt = old_idf_txt
     for ind in sys_size_data.index:
+        # use upper text only to search for consistent
         upper_txt = new_txt.upper()
         # find the location of the object
         obj_txt_re = re.compile(b''.join([
@@ -74,14 +75,19 @@ def copy_sizing_system_info(old_idf_txt: str, eio_txt: str):
                 txt_re = re.compile(
                     b''.join([b'.+\n']*30+[b'\s*AUTOSIZE'])
                 ).search(obj_txt)
-                if txt_re is not None:
-                    # replace the string
-                    new_txt = str(
-                        sys_size_data.loc[ind, ' User Design Capacity']
-                    ).encode().join([
-                        new_txt[0:obj_txt_re.span()[0]+txt_re.span()[1]-8],
-                        new_txt[obj_txt_re.span()[0]+txt_re.span()[1]:]
-                    ])
+            elif sys_size_data.loc[ind, ' Load Type'] == ' Heating':
+                # find the location of the particular string to be replaced
+                txt_re = re.compile(
+                    b''.join([b'.+\n']*34+[b'\s*AUTOSIZE'])
+                ).search(obj_txt)
+            if txt_re is not None:
+                # replace the string
+                new_txt = str(
+                    sys_size_data.loc[ind, ' User Design Capacity']
+                ).encode().join([
+                    new_txt[0:obj_txt_re.span()[0]+txt_re.span()[1]-8],
+                    new_txt[obj_txt_re.span()[0]+txt_re.span()[1]:]
+                ])
 
     # return the file
     return new_txt
@@ -99,6 +105,9 @@ if __name__ == '__main__':
     # check the correctness of the copying for the system:sizing
     assert copy_sizing_system_info(testidf, testeio).find(
         b'75214.72,                !- Cooling Design Capacity {W}'
+    )
+    assert copy_sizing_system_info(testidf, testeio).find(
+        b'45424.36,                !- Heating Design Capacity {W}'
     )
 
     # print statement
