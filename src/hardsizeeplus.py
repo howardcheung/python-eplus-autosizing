@@ -45,15 +45,31 @@ def main(old_idf_file: str, eio_file: str, new_idf_file: str):
     """
 
     # write script to read the the old idf
+    inputidf = read_file(old_idf_file)
 
     # write script to read the eio file
+    eio = read_file(eio_file)
 
     # write script to transfer the values from the eio file to the idf file
 
     # output the new idf file
 
-    pass
 
+def read_file(filepath: str) -> str:
+    """
+        Read the text file in filepath and return the corresponding
+        string in UTF-8 coding
+
+        Inputs:
+        ==========
+        filepath: str
+            path to the file to be written.
+    """
+
+    with open(filepath, 'rb') as fileopened:
+        txt = fileopened.read()
+
+    return txt
 
 # running the script file
 if __name__ == '__main__':
